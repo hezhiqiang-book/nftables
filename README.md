@@ -1,6 +1,8 @@
 # nftables \(简体中文\) - ArchWiki
 
- **翻译状态：** 本文是英文页面 [Nftables](https://wiki.archlinux.org/index.php/Nftables) 的[翻译](https://wiki.archlinux.org/index.php/ArchWiki_Translation_Team_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29)，最后翻译时间：2019-04-17，点击[这里](https://wiki.archlinux.org/index.php?title=Nftables&diff=0&oldid=571364)可以查看翻译后英文页面的改动。
+#### 博客作者：联系请[点击](https://k8sadmin.info/lian-xi-zuo-zhe)，搬运不易，希望请作者喝咖啡，可以点击[联系博客作者](https://k8sadmin.info/lian-xi-zuo-zhe)
+
+**翻译状态：** 本文是英文页面 [Nftables](https://wiki.archlinux.org/index.php/Nftables) 的[翻译](https://wiki.archlinux.org/index.php/ArchWiki_Translation_Team_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29)，最后翻译时间：2019-04-17，点击[这里](https://wiki.archlinux.org/index.php?title=Nftables&diff=0&oldid=571364)可以查看翻译后英文页面的改动。
 
 [nftables](http://netfilter.org/projects/nftables/) 是一个netfilter项目，旨在替换现有的{ip,ip6,arp,eb}tables框架，为{ip,ip6}tables提供一个新的包过滤框架、一个新的用户空间实用程序（nft）和一个兼容层。它使用现有的钩子、链接跟踪系统、用户空间排队组件和netfilter日志子系统。
 
@@ -24,13 +26,13 @@ nftables区分命令行输入的临时规则和从文件加载或保存到文件
 # nft list ruleset
 ```
 
- **注意:** 要使systemd服务正确运行，可能需要创建包含nftables所有相关模块的`/etc/modules-load.d/nftables.conf`文件。可以用以下命令获取模块列表：
+**注意:** 要使systemd服务正确运行，可能需要创建包含nftables所有相关模块的`/etc/modules-load.d/nftables.conf`文件。可以用以下命令获取模块列表：
 
 ```text
 $ lsmod | grep '^nf'
 ```
 
- 否则，可能会出现错误： `Error: Could not process rule: No such file or directory`
+否则，可能会出现错误： `Error: Could not process rule: No such file or directory`
 
 ## 配置
 
@@ -42,7 +44,7 @@ nftables的用户空间实用程序nft评估大多数规则集并传递到内核
 # nft list ruleset > /etc/nftables.conf
 ```
 
- **注意:**
+**注意:**
 
 * `nft list`不输出变量的定义，如果在`/etc/nftables.conf`中有任何变量定义将会丢失。规则中使用的变量将替换为其变量值。
 * `nft list ruleset`在nftables v0.7 （Scrooge McDuck）在同时使用ICMP和ICMPv6时有语法限制。如果导出用作新的规则集将会导致错误。有关信息和解决方案，请参阅 [stackexchange post](https://unix.stackexchange.com/questions/408497/nftables-configuration-error-conflicting-protocols-specified-inet-service-v-i?rq=1)。
@@ -73,7 +75,7 @@ nftables的用户空间实用程序nft评估大多数规则集并传递到内核
 
 要创建同时适用于IPv4和IPv6的规则，请使用`inet`。`inet`允许统一`ip`和`ip6`簇，以便更容易地定义规则。
 
- **注意:** `inet`不能用于`nat`类型的链，只能用于`filter`类型的链。（[source](http://www.spinics.net/lists/netfilter/msg56411.html)）
+**注意:** `inet`不能用于`nat`类型的链，只能用于`filter`类型的链。（[source](http://www.spinics.net/lists/netfilter/msg56411.html)）
 
 有关地址簇的完整描述，请参见[nft\(8\)](https://jlk.fjfi.cvut.cz/arch/manpages/man/nft.8)中的`ADDRESS FAMILIES`章节。
 
@@ -225,7 +227,7 @@ IPv4/IPv6/Inet地址簇中，`hook`可以是`prerouting`、`input`、`forward`�
 
 #### 添加规则
 
- **提示：** iptables-translate实用程序何以将[iptables](https://wiki.archlinux.org/index.php/Iptables)规则转换成nftables格式。
+**提示：** iptables-translate实用程序何以将[iptables](https://wiki.archlinux.org/index.php/Iptables)规则转换成nftables格式。
 
 将一条规则添加到链中：
 
@@ -304,7 +306,7 @@ ct:
   state <new | established | related | invalid>
 ```
 
- **注意:** nft不使用`/etc/services`文件匹配端口号和名称，而是使用[内置列表](https://git.netfilter.org/nftables/plain/src/services.c)。要在命令行显示端口映射，请使用 `nft describe tcp dport`。
+**注意:** nft不使用`/etc/services`文件匹配端口号和名称，而是使用[内置列表](https://git.netfilter.org/nftables/plain/src/services.c)。要在命令行显示端口映射，请使用 `nft describe tcp dport`。
 
 #### 删除
 
@@ -344,7 +346,7 @@ table ip fltrTable {
 清空当前规则集：
 
 ```text
-# echo "flush ruleset" > /tmp/nftables 
+# echo "flush ruleset" > /tmp/nftables
 ```
 
 导出当前规则集：
@@ -380,10 +382,10 @@ table inet filter {
                 # accept traffic originated from us
                 ct state established,related accept
 
-		# accept ICMP & IGMP
-		ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
-		ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
-		ip protocol igmp accept
+        # accept ICMP & IGMP
+        ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
+        ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
+        ip protocol igmp accept
 
                 # activate the following line to accept common local services
                 #tcp dport { 22, 80, 443 } ct state new accept
@@ -406,37 +408,37 @@ firewall.rules
 flush ruleset
 
 table inet filter {
-	chain input {
-		type filter hook input priority 0; policy drop;
+    chain input {
+        type filter hook input priority 0; policy drop;
 
-		# established/related connections
-		ct state established,related accept
+        # established/related connections
+        ct state established,related accept
 
-		# invalid connections
-		ct state invalid drop
-		
-		# loopback interface
-		iif lo accept
+        # invalid connections
+        ct state invalid drop
 
-		# ICMP & IGMP
-		ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
-		ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
-		ip protocol igmp accept
+        # loopback interface
+        iif lo accept
 
-		# SSH (port 22)
-		tcp dport ssh accept
+        # ICMP & IGMP
+        ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
+        ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
+        ip protocol igmp accept
 
-		# HTTP (ports 80 & 443)
-		tcp dport { http, https } accept
-	}
+        # SSH (port 22)
+        tcp dport ssh accept
 
-	chain forward {
-		type filter hook forward priority 0; policy drop;
-	}
+        # HTTP (ports 80 & 443)
+        tcp dport { http, https } accept
+    }
 
-	chain output {
-		type filter hook output priority 0; policy accept;
-	}
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+    }
+
+    chain output {
+        type filter hook output priority 0; policy accept;
+    }
 
 }
 ```
@@ -449,36 +451,36 @@ firewall.2.rules
 
 ```text
 table inet filter {
-	chain input {
-		type filter hook input priority 0; policy drop;
+    chain input {
+        type filter hook input priority 0; policy drop;
 
-		ct state invalid drop
+        ct state invalid drop
 
-		iif lo accept
+        iif lo accept
 
-		# no ping floods:
-		ip protocol icmp icmp type echo-request limit rate over 10/second burst 4 packets  drop
-		ip6 nexthdr icmpv6 icmpv6 type echo-request limit rate over 10/second burst 4 packets drop
+        # no ping floods:
+        ip protocol icmp icmp type echo-request limit rate over 10/second burst 4 packets  drop
+        ip6 nexthdr icmpv6 icmpv6 type echo-request limit rate over 10/second burst 4 packets drop
 
-		ct state established,related accept
+        ct state established,related accept
 
-		# ICMP & IGMP
-		ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
-		ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
-		ip protocol igmp accept
+        # ICMP & IGMP
+        ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-reduction, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
+        ip protocol icmp icmp type { destination-unreachable, router-solicitation, router-advertisement, time-exceeded, parameter-problem } accept
+        ip protocol igmp accept
 
-		# avoid brute force on ssh:
-		tcp dport ssh ct state new limit rate 15/minute accept
+        # avoid brute force on ssh:
+        tcp dport ssh ct state new limit rate 15/minute accept
 
-	}
+    }
 
-	chain forward {
-		type filter hook forward priority 0; policy drop;
-	}
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+    }
 
-	chain output {
-		type filter hook output priority 0; policy accept;
-	}
+    chain output {
+        type filter hook output priority 0; policy accept;
+    }
 
 }
 ```
