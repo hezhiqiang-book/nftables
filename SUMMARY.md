@@ -1,4 +1,4 @@
 # Table of contents
 
-* [nftables \(简体中文\) - ArchWiki](README.md)
+* [nftables 简体中文](README.md)
 
